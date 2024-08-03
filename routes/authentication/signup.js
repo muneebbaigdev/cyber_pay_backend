@@ -7,13 +7,19 @@ router.post('/',(req,res)=>{
 
     let saved = new User(req.body)
     saved.save().then(data=>{
-        jwt.sign(JSON.stringify(data),'mykey123',(error,token)=>{
-            if(token){
-                res.json({success:true,message:"Account Created Successfully",token})
-            }else{
-                res.json({success:false,message:"An Error Occured"})
-            }
-        })
+
+            jwt.sign(JSON.stringify(data),'mykey123',(err,token)=>{
+                if(token){
+                    
+                    res.json({success:true,message:"Account Created Successfully",token})
+
+                }else{
+                    res.json({success:false,message:"An Error Occured"})
+                }
+            })
+
+        
+
     }).catch(err=>{
         res.json({success:false,message:"An Error Occured"})
     })

@@ -16,6 +16,10 @@ console.log('database connected')
 
 app.use('/',require('./routes/default'))
 app.use('/authentication',require('./routes/authentication'))
+app.post('/upload',(req,res)=>{
+    console.log(req)
+    res.send("all ok")
+})
 
 app.listen(8080,()=>{
     console.log("server is running")

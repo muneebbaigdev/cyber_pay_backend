@@ -1,0 +1,42 @@
+
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const cors = require('cors')
+
+// Create an Express application
+const app = express();
+const port = 8080;
+app.use(cors())
+
+// Configure multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/'); // Folder to save uploaded files
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Save file with a unique name
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// Define your upload route
+app.post('/upload', upload.single('file'), (req, res) => {
+  // 'file' should match the field name in your form-data (or in the frontend code)
+
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  // File information is in req.file
+  console.log('Uploaded file:', req.file);
+
+  // Send a success response
+  res.send('File uploaded successfully.');
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
